@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Study Time Manager</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
+    <link href="manifest.json" rel="manifest"/>
+    <meta content="#0066cc" name="theme-color"/>
+    <!-- Favicon standard -->
+    <link href="favicon.png" rel="icon" type="image/png"/>
+    <!-- Icona per installazione su dispositivo (PWA) -->
+    <link href="icon-512.png" rel="apple-touch-icon"/>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body class="bg-light">
+    <div class="container-fluid min-vh-100 d-flex flex-column">
+        <!-- Auth Section -->
+        <div id="auth-section" class="row justify-content-center align-items-center flex-grow-1">
+            <div class="col-md-6 col-lg-4">
+                <div class="card shadow-sm">
+                    <div class="card-body text-center p-4">
+                        <h2 class="mb-4 text-danger">Study Time Manager</h2>
+                        <div id="login-form">
+                            <div class="mb-3">
+                                <input type="text" id="username" class="form-control" placeholder="Username" required>
+                            </div>
+                            <div class="mb-3">
+                                <input type="password" id="password" class="form-control" placeholder="Password" required>
+                            </div>
+                            <button id="login-btn" class="btn btn-danger w-100 mb-2">Login</button>
+                            <button id="register-btn" class="btn btn-outline-danger w-100">Registrati</button>
+                            <a href="#" id="forgot-password" class="text-danger small d-block text-center mt-2">Password dimenticata?</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main App (hidden initially) -->
+        <div id="app-container" class="d-none flex-grow-1">
+            <!-- Navbar -->
+            <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
+                <div class="container-fluid">
+                    <a class="navbar-brand" href="#">Study Time Manager</a>
+                    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+                        <span class="navbar-toggler-icon"></span>
+                    </button>
+                    <div class="collapse navbar-collapse" id="navbarNav">
+                        <ul class="navbar-nav ms-auto">
+                            <li class="nav-item">
+                                <a class="nav-link" href="#" id="logout-btn">Logout</a>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </nav>
+
+            <!-- Main Content -->
+            <div class="row flex-grow-1">
+                <!-- Sidebar -->
+                <div class="col-lg-2 bg-white sidebar p-3 border-end">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-section="timer-section"><i class="bi bi-stopwatch me-2"></i>Timer Studio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="flashcards-section"><i class="bi bi-card-text me-2"></i>Flashcards</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="stats-section"><i class="bi bi-bar-chart me-2"></i>Statistiche</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="calendar-section"><i class="bi bi-calendar me-2"></i>Calendario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="notes-section"><i class="bi bi-journal-text me-2"></i>Appunti</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Content Area -->
+                <div class="col-lg-10 p-4">
+                    <!-- Timer Section -->
+                    <div id="timer-section" class="content-section">
+                        <h2 class="text-danger mb-4">Timer di Studio</h2>
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body text-center">
+                                <div id="timer-display" class="display-1 mb-3">00:00:00</div>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button id="start-timer" class="btn btn-danger btn-lg"><i class="bi bi-play-fill"></i> Start</button>
+                                    <button id="stop-timer" class="btn btn-outline-danger btn-lg"><i class="bi bi-stop-fill"></i> Stop</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Sessioni Recenti</h5>
+                                <div id="recent-sessions" class="list-group">
+                                    <!-- Sessions will be added here dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Flashcards Section -->
+                    <div id="flashcards-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Flashcards</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Crea Nuova Flashcard</h5>
+                                        <div class="mb-3">
+                                            <label for="flashcard-front" class="form-label">Fronte</label>
+                                            <textarea id="flashcard-front" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="flashcard-back" class="form-label">Retro</label>
+                                            <textarea id="flashcard-back" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <button id="save-flashcard" class="btn btn-danger">Salva Flashcard</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Le Tue Flashcards</h5>
+                                        <div id="flashcards-list" class="list-group">
+                                            <!-- Flashcards will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Modalità Ripasso</h5>
+                                <div id="review-flashcard" class="card mb-3 mx-auto" style="width: 100%; max-width: 600px; min-height: 300px;">
+                                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                        <div id="flashcard-content" class="text-center p-4" style="font-size: 1.2rem;">
+                                            Clicca "Inizia Ripasso" per cominciare
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button id="start-review" class="btn btn-danger">Inizia Ripasso</button>
+                                    <button id="flip-card" class="btn btn-outline-danger d-none">Gira Carta</button>
+                                    <button id="next-card" class="btn btn-outline-danger d-none">Prossima Carta</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Stats Section -->
+                    <div id="stats-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Statistiche Studio</h2>
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Oggi</h5>
+                                        <div id="today-stats" class="display-6">00:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Media Settimanale</h5>
+                                        <div id="weekly-stats" class="display-6">00:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Media Mensile</h5>
+                                        <div id="monthly-stats" class="display-6">00:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Seleziona Periodo</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="stats-start-date" class="form-label">Da</label>
+                                        <input type="date" id="stats-start-date" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="stats-end-date" class="form-label">A</label>
+                                        <input type="date" id="stats-end-date" class="form-control">
+                                    </div>
+                                </div>
+                                <button id="show-stats" class="btn btn-danger">Mostra Statistiche</button>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Grafico Tempo di Studio</h5>
+                                <canvas id="study-chart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Section -->
+                    <div id="calendar-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Calendario</h2>
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Aggiungi Evento</h5>
+                                        <div class="mb-3">
+                                            <label for="event-date" class="form-label">Data</label>
+                                            <input type="date" id="event-date" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-title" class="form-label">Titolo</label>
+                                            <input type="text" id="event-title" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-type" class="form-label">Tipo</label>
+                                            <select id="event-type" class="form-select">
+                                                <option value="exam">Esame</option>
+                                                <option value="work">Lavoro</option>
+                                                <option value="other">Altro</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-notes" class="form-label">Note</label>
+                                            <textarea id="event-notes" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <button id="save-event" class="btn btn-danger">Salva Evento</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Eventi Prossimi</h5>
+                                <div id="upcoming-events" class="list-group">
+                                    <!-- Events will be added here dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div id="notes-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Appunti</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Nuovo Appunto</h5>
+                                        <div class="mb-3">
+                                            <label for="note-title" class="form-label">Titolo</label>
+                                            <input type="text" id="note-title" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="note-content" class="form-label">Contenuto</label>
+                                            <textarea id="note-content" class="form-control" rows="10"></textarea>
+                                        </div>
+                                        <button id="save-note" class="btn btn-danger">Salva Appunto</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">I Tuoi Appunti</h5>
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="search-notes" class="form-control" placeholder="Cerca appunti...">
+                                            <button class="btn btn-outline-danger" id="clear-search">Pulisci</button>
+                                        </div>
+                                        <div id="notes-list" class="list-group">
+                                            <!-- Notes will be added here dynamically -->
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Navigation (Mobile) -->
+            <div class="d-lg-none fixed-bottom bg-white border-top">
+                <div class="row text-center">
+                    <div class="col">
+                        <a href="#" class="btn btn-link text-danger" data-section="timer-section"><i class="bi bi-stopwatch fs-4"></i><br><small>Timer</small></a>
+                    </div>
+                    <div class="col">
+                        <a href="#" class="btn btn-link text-muted" data-section="flashcards-section"><i class="bi bi-card-text fs-4"></i><br><small>Flashcards</small></a>
+                    </div>
+                    <div class="col">
+                        <a href="#" class="btn btn-link text-muted" data-section="stats-section"><i class="bi bi-bar-chart fs-4"></i><br><small>Statistiche</small></a>
+                    </div>
+                    <div class="col">
+                        <a href="#" class="btn btn-link text-muted" data-section="calendar-section"><i class="bi bi-calendar fs-4"></i><br><small>Calendario</small></a>
+                    </div>
+                    <div class="col">
+                        <a href="#" class="btn btn-link text-muted" data-section="notes-section"><i class="bi bi-journal-text fs-4"></i><br><small>Appunti</small></a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Auth Modal -->
+    <div class="modal fade" id="authModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header border-0">
+                    <h5 class="modal-title text-danger" id="authModalTitle">Registrazione</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div id="register-form">
+                        <div class="mb-3">
+                            <label for="reg-username" class="form-label">Username</label>
+                            <input type="text" id="reg-username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="reg-password" class="form-label">Password</label>
+                            <input type="password" id="reg-password" class="form-control" required>
+                        </div>
+                        <button id="confirm-register" class="btn btn-danger w-100">Registrati</button>
+                    </div>
+                    
+                    <div id="recover-form" class="d-none">
+                        <div class="mb-3">
+                            <label for="recover-username" class="form-label">Username</label>
+                            <input type="text" id="recover-username" class="form-control" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="new-password" class="form-label">Nuova Password</label>
+                            <input type="password" id="new-password" class="form-control" required>
+                        </div>
+                        <button id="confirm-recover" class="btn btn-danger w-100">Reimposta Password</button>
+                    </div>
+                </div>
+                <div class="modal-footer border-0 justify-content-center">
+                    <a href="#" id="switch-to-recover" class="text-danger">Password dimenticata?</a>
+                    <a href="#" id="switch-to-register" class="text-danger d-none">Torna alla Registrazione</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Custom Alert -->
+    <div id="customAlert" class="modal fade">
+        <div class="modal-dialog modal-dialog-centered">
+            <div class="modal-content border-0">
+                <div class="modal-body text-center p-4">
+                    <i id="alert-icon" class="bi bi-exclamation-triangle-fill text-danger fs-1 mb-3"></i>
+                    <h5 id="alert-title" class="mb-3">Attenzione</h5>
+                    <p id="alert-message"></p>
+                    <button class="btn btn-danger mt-3" data-bs-dismiss="modal">OK</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Export Modal -->
+    <div class="modal fade" id="exportModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Esporta Dati</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label">Seleziona cosa esportare:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="export-sessions" checked>
+                            <label class="form-check-label" for="export-sessions">Sessioni di studio</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="export-flashcards" checked>
+                            <label class="form-check-label" for="export-flashcards">Flashcards</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="export-events" checked>
+                            <label class="form-check-label" for="export-events">Eventi del calendario</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="export-notes" checked>
+                            <label class="form-check-label" for="export-notes">Appunti</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-danger" id="confirm-export">Esporta</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Import Modal -->
+    <div class="modal fade" id="importModal" tabindex="-1">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title">Importa Dati</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label for="import-file" class="form-label">Seleziona file JSON:</label>
+                        <input class="form-control" type="file" id="import-file" accept=".json">
+                    </div>
+                    <div class="alert alert-warning">
+                        Attenzione: l'importazione sovrascriverà i dati esistenti per i tipi selezionati.
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label">Seleziona cosa importare:</label>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="import-sessions">
+                            <label class="form-check-label" for="import-sessions">Sessioni di studio</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="import-flashcards">
+                            <label class="form-check-label" for="import-flashcards">Flashcards</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="import-events">
+                            <label class="form-check-label" for="import-events">Eventi del calendario</label>
+                        </div>
+                        <div class="form-check">
+                            <input class="form-check-input" type="checkbox" id="import-notes">
+                            <label class="form-check-label" for="import-notes">Appunti</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Annulla</button>
+                    <button type="button" class="btn btn-danger" id="confirm-import">Importa</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.2.0"></script>
+    <script src="app.js"></script>
+</body>
+</html>
