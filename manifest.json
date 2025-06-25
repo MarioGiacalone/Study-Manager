@@ -3,8 +3,8 @@
   "short_name": "Time_Manger",
   "start_url": "index.html",
   "display": "fullscreen",
-  "background_color": "#0099ff",
-  "theme_color": "#0066cc",
+  "background_color": "#900C3F ",
+  "theme_color": "#900C3F ",
   "icons": [
     {
       "src": "favicon.png",
