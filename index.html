@@ -7,14 +7,16 @@
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.10.0/font/bootstrap-icons.css">
     <link href="manifest.json" rel="manifest"/>
-    <meta content="#900C3F" name="theme-color"/>
+    <meta content="#900C3F " name="theme-color"/>
+    <!-- Favicon standard -->
     <link href="favicon.png" rel="icon" type="image/png"/>
+    <!-- Icona per installazione su dispositivo (PWA) -->
     <link href="icon-512.png" rel="apple-touch-icon"/>
     <link rel="stylesheet" href="styles.css">
     <link rel="stylesheet" href="mobile.css">
 </head>
 <body class="bg-light">
-    <div id="app-container" class="d-flex flex-column min-vh-100">
+    <div class="container-fluid min-vh-100 d-flex flex-column">
         <!-- Auth Section -->
         <div id="auth-section" class="row justify-content-center align-items-center flex-grow-1">
             <div class="col-md-6 col-lg-4">
@@ -37,10 +39,10 @@
             </div>
         </div>
 
-        <!-- Main App -->
-        <div id="main-app" class="d-none flex-column flex-grow-1">
+        <!-- Main App (hidden initially) -->
+        <div id="app-container" class="d-none flex-grow-1">
             <!-- Navbar -->
-            <nav class="navbar navbar-expand-lg navbar-dark bg-danger fixed-header">
+            <nav class="navbar navbar-expand-lg navbar-dark bg-danger">
                 <div class="container-fluid">
                     <a class="navbar-brand" href="#">Study Time Manager</a>
                     <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
@@ -56,230 +58,236 @@
                 </div>
             </nav>
 
-            <!-- Scrollable Content -->
-            <div class="main-content-scrollable">
-                <div class="row flex-grow-1">
-                    <!-- Sidebar -->
-                    <div class="col-lg-2 bg-white sidebar p-3 border-end d-none d-lg-block">
-                        <ul class="nav flex-column">
-                            <li class="nav-item">
-                                <a class="nav-link active" href="#" data-section="timer-section"><i class="bi bi-stopwatch me-2"></i>Timer Studio</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-section="flashcards-section"><i class="bi bi-card-text me-2"></i>Flashcards</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-section="stats-section"><i class="bi bi-bar-chart me-2"></i>Statistiche</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-section="calendar-section"><i class="bi bi-calendar me-2"></i>Calendario</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link" href="#" data-section="notes-section"><i class="bi bi-journal-text me-2"></i>Appunti</a>
-                            </li>
-                        </ul>
+            <!-- Main Content -->
+            <div class="row flex-grow-1">
+                <!-- Sidebar -->
+                <div class="col-lg-2 bg-white sidebar p-3 border-end">
+                    <ul class="nav flex-column">
+                        <li class="nav-item">
+                            <a class="nav-link active" href="#" data-section="timer-section"><i class="bi bi-stopwatch me-2"></i>Timer Studio</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="flashcards-section"><i class="bi bi-card-text me-2"></i>Flashcards</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="stats-section"><i class="bi bi-bar-chart me-2"></i>Statistiche</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="calendar-section"><i class="bi bi-calendar me-2"></i>Calendario</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#" data-section="notes-section"><i class="bi bi-journal-text me-2"></i>Appunti</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Content Area -->
+                <div class="col-lg-10 p-4">
+                    <!-- Timer Section -->
+                    <div id="timer-section" class="content-section">
+                        <h2 class="text-danger mb-4">Timer di Studio</h2>
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body text-center">
+                                <div id="timer-display" class="display-1 mb-3">00:00:00</div>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button id="start-timer" class="btn btn-danger btn-lg"><i class="bi bi-play-fill"></i> Start</button>
+                                    <button id="stop-timer" class="btn btn-outline-danger btn-lg"><i class="bi bi-stop-fill"></i> Stop</button>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Sessioni Recenti</h5>
+                                <div id="recent-sessions" class="list-group">
+                                    <!-- Sessions will be added here dynamically -->
+                                </div>
+                            </div>
+                        </div>
                     </div>
 
-                    <!-- Content Area -->
-                    <div class="col-lg-10 p-4 content-area">
-                        <!-- Timer Section -->
-                        <div id="timer-section" class="content-section">
-                            <h2 class="text-danger mb-4">Timer di Studio</h2>
-                            <div class="card shadow-sm mb-4">
-                                <div class="card-body text-center">
-                                    <div id="timer-display" class="display-1 mb-3">00:00:00</div>
-                                    <div class="d-flex justify-content-center gap-3">
-                                        <button id="start-timer" class="btn btn-danger btn-lg"><i class="bi bi-play-fill"></i> Start</button>
-                                        <button id="stop-timer" class="btn btn-outline-danger btn-lg"><i class="bi bi-stop-fill"></i> Stop</button>
+                    <!-- Flashcards Section -->
+                    <div id="flashcards-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Flashcards</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Crea Nuova Flashcard</h5>
+                                        <div class="mb-3">
+                                            <label for="flashcard-front" class="form-label">Fronte</label>
+                                            <textarea id="flashcard-front" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="flashcard-back" class="form-label">Retro</label>
+                                            <textarea id="flashcard-back" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <button id="save-flashcard" class="btn btn-danger">Salva Flashcard</button>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">Sessioni Recenti</h5>
-                                    <div id="recent-sessions" class="list-group"></div>
-                                </div>
-                            </div>
-                        </div>
-
-                        <!-- Flashcards Section -->
-                        <div id="flashcards-section" class="content-section d-none">
-                            <h2 class="text-danger mb-4">Flashcards</h2>
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Crea Nuova Flashcard</h5>
-                                            <div class="mb-3">
-                                                <label for="flashcard-front" class="form-label">Fronte</label>
-                                                <textarea id="flashcard-front" class="form-control" rows="3"></textarea>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="flashcard-back" class="form-label">Retro</label>
-                                                <textarea id="flashcard-back" class="form-control" rows="3"></textarea>
-                                            </div>
-                                            <button id="save-flashcard" class="btn btn-danger">Salva Flashcard</button>
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Le Tue Flashcards</h5>
+                                        <div id="flashcards-list" class="list-group">
+                                            <!-- Flashcards will be added here dynamically -->
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Le Tue Flashcards</h5>
-                                            <div id="flashcards-list" class="list-group"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card shadow-sm">
-                                <div class="card-body text-center">
-                                    <h5 class="card-title mb-3">Modalità Ripasso</h5>
-                                    <div id="review-flashcard" class="card mb-3 mx-auto" style="width: 100%; max-width: 600px; min-height: 300px;">
-                                        <div class="card-body d-flex flex-column justify-content-center align-items-center">
-                                            <div id="flashcard-content" class="text-center p-4" style="font-size: 1.2rem;">
-                                                Clicca "Inizia Ripasso" per cominciare
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="d-flex justify-content-center gap-3">
-                                        <button id="start-review" class="btn btn-danger">Inizia Ripasso</button>
-                                        <button id="flip-card" class="btn btn-outline-danger d-none">Gira Carta</button>
-                                        <button id="next-card" class="btn btn-outline-danger d-none">Prossima Carta</button>
                                     </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Stats Section -->
-                        <div id="stats-section" class="content-section d-none">
-                            <h2 class="text-danger mb-4">Statistiche Studio</h2>
-                            <div class="row mb-4">
-                                <div class="col-md-4">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title">Oggi</h5>
-                                            <div id="today-stats" class="display-6">00:00</div>
+                        <div class="card shadow-sm">
+                            <div class="card-body text-center">
+                                <h5 class="card-title mb-3">Modalità Ripasso</h5>
+                                <div id="review-flashcard" class="card mb-3 mx-auto" style="width: 100%; max-width: 600px; min-height: 300px;">
+                                    <div class="card-body d-flex flex-column justify-content-center align-items-center">
+                                        <div id="flashcard-content" class="text-center p-4" style="font-size: 1.2rem;">
+                                            Clicca "Inizia Ripasso" per cominciare
                                         </div>
                                     </div>
                                 </div>
-                                <div class="col-md-4">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title">Media Settimanale</h5>
-                                            <div id="weekly-stats" class="display-6">00:00</div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body text-center">
-                                            <h5 class="card-title">Media Mensile</h5>
-                                            <div id="monthly-stats" class="display-6">00:00</div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                            <div class="card shadow-sm mb-4">
-                                <div class="card-body">
-                                    <h5 class="card-title">Seleziona Periodo</h5>
-                                    <div class="row">
-                                        <div class="col-md-6 mb-3">
-                                            <label for="stats-start-date" class="form-label">Da</label>
-                                            <input type="date" id="stats-start-date" class="form-control">
-                                        </div>
-                                        <div class="col-md-6 mb-3">
-                                            <label for="stats-end-date" class="form-label">A</label>
-                                            <input type="date" id="stats-end-date" class="form-control">
-                                        </div>
-                                    </div>
-                                    <button id="show-stats" class="btn btn-danger">Mostra Statistiche</button>
-                                </div>
-                            </div>
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title">Grafico Tempo di Studio</h5>
-                                    <canvas id="study-chart" height="300"></canvas>
+                                <div class="d-flex justify-content-center gap-3">
+                                    <button id="start-review" class="btn btn-danger">Inizia Ripasso</button>
+                                    <button id="flip-card" class="btn btn-outline-danger d-none">Gira Carta</button>
+                                    <button id="next-card" class="btn btn-outline-danger d-none">Prossima Carta</button>
                                 </div>
                             </div>
                         </div>
+                    </div>
 
-                        <!-- Calendar Section -->
-                        <div id="calendar-section" class="content-section d-none">
-                            <h2 class="text-danger mb-4">Calendario</h2>
-                            <div class="row">
-                                <div class="col-md-8 mb-4">
-                                    <div class="card shadow-sm">
-                                        <div class="card-body">
-                                            <div id="calendar"></div>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div class="col-md-4 mb-4">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Aggiungi Evento</h5>
-                                            <div class="mb-3">
-                                                <label for="event-date" class="form-label">Data</label>
-                                                <input type="date" id="event-date" class="form-control">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="event-title" class="form-label">Titolo</label>
-                                                <input type="text" id="event-title" class="form-control">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="event-type" class="form-label">Tipo</label>
-                                                <select id="event-type" class="form-select">
-                                                    <option value="exam">Esame</option>
-                                                    <option value="work">Lavoro</option>
-                                                    <option value="other">Altro</option>
-                                                </select>
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="event-notes" class="form-label">Note</label>
-                                                <textarea id="event-notes" class="form-control" rows="3"></textarea>
-                                            </div>
-                                            <button id="save-event" class="btn btn-danger">Salva Evento</button>
-                                        </div>
+                    <!-- Stats Section -->
+                    <div id="stats-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Statistiche Studio</h2>
+                        <div class="row mb-4">
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Oggi</h5>
+                                        <div id="today-stats" class="display-6">00:00</div>
                                     </div>
                                 </div>
                             </div>
-                            <div class="card shadow-sm">
-                                <div class="card-body">
-                                    <h5 class="card-title mb-3">Eventi Prossimi</h5>
-                                    <div id="upcoming-events" class="list-group"></div>
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Media Settimanale</h5>
+                                        <div id="weekly-stats" class="display-6">00:00</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body text-center">
+                                        <h5 class="card-title">Media Mensile</h5>
+                                        <div id="monthly-stats" class="display-6">00:00</div>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-
-                        <!-- Notes Section -->
-                        <div id="notes-section" class="content-section d-none">
-                            <h2 class="text-danger mb-4">Appunti</h2>
-                            <div class="row">
-                                <div class="col-md-6 mb-4">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">Nuovo Appunto</h5>
-                                            <div class="mb-3">
-                                                <label for="note-title" class="form-label">Titolo</label>
-                                                <input type="text" id="note-title" class="form-control">
-                                            </div>
-                                            <div class="mb-3">
-                                                <label for="note-content" class="form-label">Contenuto</label>
-                                                <textarea id="note-content" class="form-control" rows="10"></textarea>
-                                            </div>
-                                            <button id="save-note" class="btn btn-danger">Salva Appunto</button>
-                                        </div>
+                        <div class="card shadow-sm mb-4">
+                            <div class="card-body">
+                                <h5 class="card-title">Seleziona Periodo</h5>
+                                <div class="row">
+                                    <div class="col-md-6 mb-3">
+                                        <label for="stats-start-date" class="form-label">Da</label>
+                                        <input type="date" id="stats-start-date" class="form-control">
+                                    </div>
+                                    <div class="col-md-6 mb-3">
+                                        <label for="stats-end-date" class="form-label">A</label>
+                                        <input type="date" id="stats-end-date" class="form-control">
                                     </div>
                                 </div>
-                                <div class="col-md-6 mb-4">
-                                    <div class="card shadow-sm h-100">
-                                        <div class="card-body">
-                                            <h5 class="card-title">I Tuoi Appunti</h5>
-                                            <div class="input-group mb-3">
-                                                <input type="text" id="search-notes" class="form-control" placeholder="Cerca appunti...">
-                                                <button class="btn btn-outline-danger" id="clear-search">Pulisci</button>
-                                            </div>
-                                            <div id="notes-list" class="list-group"></div>
+                                <button id="show-stats" class="btn btn-danger">Mostra Statistiche</button>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title">Grafico Tempo di Studio</h5>
+                                <canvas id="study-chart" height="300"></canvas>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Calendar Section -->
+                    <div id="calendar-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Calendario</h2>
+                        <div class="row">
+                            <div class="col-md-8 mb-4">
+                                <div class="card shadow-sm">
+                                    <div class="card-body">
+                                        <div id="calendar"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-4 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Aggiungi Evento</h5>
+                                        <div class="mb-3">
+                                            <label for="event-date" class="form-label">Data</label>
+                                            <input type="date" id="event-date" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-title" class="form-label">Titolo</label>
+                                            <input type="text" id="event-title" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-type" class="form-label">Tipo</label>
+                                            <select id="event-type" class="form-select">
+                                                <option value="exam">Esame</option>
+                                                <option value="work">Lavoro</option>
+                                                <option value="other">Altro</option>
+                                            </select>
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="event-notes" class="form-label">Note</label>
+                                            <textarea id="event-notes" class="form-control" rows="3"></textarea>
+                                        </div>
+                                        <button id="save-event" class="btn btn-danger">Salva Evento</button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="card shadow-sm">
+                            <div class="card-body">
+                                <h5 class="card-title mb-3">Eventi Prossimi</h5>
+                                <div id="upcoming-events" class="list-group">
+                                    <!-- Events will be added here dynamically -->
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Notes Section -->
+                    <div id="notes-section" class="content-section d-none">
+                        <h2 class="text-danger mb-4">Appunti</h2>
+                        <div class="row">
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">Nuovo Appunto</h5>
+                                        <div class="mb-3">
+                                            <label for="note-title" class="form-label">Titolo</label>
+                                            <input type="text" id="note-title" class="form-control">
+                                        </div>
+                                        <div class="mb-3">
+                                            <label for="note-content" class="form-label">Contenuto</label>
+                                            <textarea id="note-content" class="form-control" rows="10"></textarea>
+                                        </div>
+                                        <button id="save-note" class="btn btn-danger">Salva Appunto</button>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="col-md-6 mb-4">
+                                <div class="card shadow-sm h-100">
+                                    <div class="card-body">
+                                        <h5 class="card-title">I Tuoi Appunti</h5>
+                                        <div class="input-group mb-3">
+                                            <input type="text" id="search-notes" class="form-control" placeholder="Cerca appunti...">
+                                            <button class="btn btn-outline-danger" id="clear-search">Pulisci</button>
+                                        </div>
+                                        <div id="notes-list" class="list-group">
+                                            <!-- Notes will be added here dynamically -->
                                         </div>
                                     </div>
                                 </div>
@@ -453,16 +461,5 @@
     <script src="https://cdn.jsdelivr.net/npm/luxon@3.0.1"></script>
     <script src="https://cdn.jsdelivr.net/npm/chartjs-adapter-luxon@1.2.0"></script>
     <script src="app.js"></script>
-    <script>
-        // Mobile viewport fix
-        function adjustViewport() {
-            const vh = window.innerHeight * 0.01;
-            document.documentElement.style.setProperty('--vh', `${vh}px`);
-        }
-
-        window.addEventListener('resize', adjustViewport);
-        window.addEventListener('orientationchange', adjustViewport);
-        adjustViewport();
-    </script>
 </body>
 </html>
