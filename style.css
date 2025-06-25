@@ -216,3 +216,12 @@ body {
 #alert-icon.bi-info-circle-fill {
     color: #17a2b8;
 }
+body {
+  overflow-y: auto !important;
+  min-height: 100vh !important;
+}
+
+.container {
+  min-height: 100vh;
+  position: relative;
+}
