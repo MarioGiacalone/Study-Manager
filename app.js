@@ -1181,3 +1181,15 @@ function showEventDetails(event) {
     initEventListeners();
     checkAuth();
 });
+window.addEventListener('resize', () => {
+  document.body.style.height = window.innerHeight + 'px';
+});
+// Aggiungi alla fine di app.js
+function adjustViewport() {
+  const vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty('--vh', `${vh}px`);
+}
+
+window.addEventListener('resize', adjustViewport);
+window.addEventListener('orientationchange', adjustViewport);
+adjustViewport();
