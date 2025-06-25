@@ -1,6 +1,6 @@
 {
-  "name": "Happy Aquarium",
-  "short_name": "Aquarium",
+  "name": "Study-Time_Manger",
+  "short_name": "Time_Manger",
   "start_url": "index.html",
   "display": "fullscreen",
   "background_color": "#0099ff",
